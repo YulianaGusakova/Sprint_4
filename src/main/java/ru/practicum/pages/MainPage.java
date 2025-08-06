@@ -161,11 +161,6 @@ public class MainPage {
         }
     }
 
-//    public void waitUntilOrderFormAppear() {
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(EXPLICITY_TIMEOUT));
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(orderForm));
-//    }
-
     public void clickOnGoButton() {
         new WebDriverWait(driver, Duration.ofSeconds(EXPLICITY_TIMEOUT))
                 .until(ExpectedConditions.visibilityOfElementLocated(goButton));
