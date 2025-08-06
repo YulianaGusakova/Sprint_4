@@ -26,13 +26,11 @@ public class OrderFormScooterInfo {
         this.driver = driver;
     }
 
-    public void waitUntilRentHeaderAppear() {
-        new WebDriverWait(driver, Duration.ofSeconds(EXPLICITY_TIMEOUT)).until(driver -> (driver.findElement(rentHeader).getText() != null
-                && !driver.findElement(rentHeader).getText().isEmpty()
-        ));
-    }
-
     public void insertDate(String newDate) {
+        new WebDriverWait(driver, Duration.ofSeconds(EXPLICITY_TIMEOUT)).until(driver -> {
+            driver.findElement(rentHeader).getText();
+            return !driver.findElement(rentHeader).getText().isEmpty();
+        });
         driver.findElement(dateField).sendKeys(newDate);
     }
 
@@ -55,5 +53,13 @@ public class OrderFormScooterInfo {
 
     public void clickOnOrderButton() {
         driver.findElement(orderButton).click();
+    }
+
+    public void insertScooterInfo(String newDate, String newRentalPeriod, Enum colour, String newComment) {
+        insertDate(newDate);
+        insertRentalPeriod(newRentalPeriod);
+        chooseColour(colour);
+        insertComment(newComment);
+        clickOnOrderButton();
     }
 }

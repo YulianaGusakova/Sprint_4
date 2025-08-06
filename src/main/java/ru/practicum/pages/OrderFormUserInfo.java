@@ -19,12 +19,15 @@ public class OrderFormUserInfo {
     private final String nameMetroStation = ".//button[@value='%s']";
     private final By phoneNumber = By.xpath(".//input[@placeholder='* Телефон: на него позвонит курьер']");
     private final By nextButton = By.cssSelector(".Button_Button__ra12g.Button_Middle__1CSJM");
+    private final By orderForm = By.cssSelector(".Order_Content__bmtHS");
 
     public OrderFormUserInfo(WebDriver driver) {
         this.driver = driver;
     }
 
     public void insertName(String newName) {
+        new WebDriverWait(driver, Duration.ofSeconds(EXPLICITY_TIMEOUT))
+                .until(ExpectedConditions.visibilityOfElementLocated(orderForm));
         driver.findElement(nameField).sendKeys(newName);
     }
 
@@ -51,4 +54,14 @@ public class OrderFormUserInfo {
     public void clickOnNextButton() {
         driver.findElement(nextButton).click();
     }
+
+    public void insertUserInfo(String newName, String newSurname, String newAddress, int stationNumber, String newPhoneNumber) {
+        insertName(newName);
+        insertSurname(newSurname);
+        insertAddress(newAddress);
+        chooseMetroStation(stationNumber);
+        insertPhoneNumber(newPhoneNumber);
+        clickOnNextButton();
+    }
+
 }

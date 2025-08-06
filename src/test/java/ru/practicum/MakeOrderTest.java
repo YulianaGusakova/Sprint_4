@@ -4,6 +4,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import ru.practicum.pages.MainPage;
@@ -37,6 +38,9 @@ public class MakeOrderTest {
     private final String comment;
     private final String expectedHeader = "Заказ оформлен";
     private final Enum button;
+    private By question;
+    private By answer;
+    private String expectedText;
 
     public MakeOrderTest(Enum button, String name, String surname, String address, int stationNumber, String phoneNumber, String date, String rentalPeriod, Enum colour, String comment) {
         this.name = name;
@@ -51,7 +55,7 @@ public class MakeOrderTest {
         this.button = button;
     }
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name = "Проверка оформления заказа: кнопка Заказать {0}, имя пользователя {1}, фамилия пользователя {2}, адрес {3}, номер станции метро {4}, номер телефона {5}, дата доставки {6}, срок аренды {7}, цвет самоката {8}, комментарий {9}")
     public static Object[][] getParameters() {
         return new Object[][]{
                 {TOP_BUTTON, "Алексей", "Иванов", "Адрес 1", 55, "79211111111", "31.08.2025", FOUR_DAYS, GREY, "спасибо"},
@@ -64,25 +68,13 @@ public class MakeOrderTest {
     @Test
     public void MakeSuccessfulOrderTest() {
         WebDriver driver = factory.getDriver();
-        var mainPage = new MainPage(driver, null, null);
+        var mainPage = new MainPage(driver, question, answer, expectedText);
         var orderFormUserInfo = new OrderFormUserInfo(driver);
         var orderFormScooterInfo = new OrderFormScooterInfo(driver);
         var orderConfirmation = new OrderConfirmation(driver);
         mainPage.clickMakeOrderButton(button);
-        mainPage.WaitUntilOrderFormAppear();
-        orderFormUserInfo.insertName(name);
-        orderFormUserInfo.insertSurname(surname);
-        orderFormUserInfo.insertAddress(address);
-        orderFormUserInfo.chooseMetroStation(stationNumber);
-        orderFormUserInfo.insertPhoneNumber(phoneNumber);
-        orderFormUserInfo.clickOnNextButton();
-        orderFormScooterInfo.waitUntilRentHeaderAppear();
-        orderFormScooterInfo.insertDate(date);
-        orderFormScooterInfo.insertRentalPeriod(rentalPeriod);
-        orderFormScooterInfo.chooseColour(colour);
-        orderFormScooterInfo.insertComment(comment);
-        orderFormScooterInfo.clickOnOrderButton();
-        orderConfirmation.waitUntilConfirmationHeaderAppear();
+        orderFormUserInfo.insertUserInfo(name, surname, address, stationNumber, phoneNumber);
+        orderFormScooterInfo.insertScooterInfo(date, rentalPeriod, colour, comment);
         orderConfirmation.clickOnButtonYes();
         orderConfirmation.getSuccessfulOrderHeader();
     }

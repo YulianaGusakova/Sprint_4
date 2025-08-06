@@ -12,14 +12,15 @@ public class ScooterStatusTest {
     public DriverFactory factory = new DriverFactory();
     private By question;
     private By answer;
+    private String expectedText;
 
     @Test
     public void testNonExistingOrderNotFound() throws InterruptedException {
         WebDriver driver = factory.getDriver();
-        var mainPage = new MainPage(driver, question, answer);
+        var mainPage = new MainPage(driver, question, answer, expectedText);
         mainPage.clickOnStatusButton();
         mainPage.sendOrderNumber();
         mainPage.clickOnGoButton();
-        mainPage.CheckErrorImage();
+        mainPage.checkErrorImage();
     }
 }

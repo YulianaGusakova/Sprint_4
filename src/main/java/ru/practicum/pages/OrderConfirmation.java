@@ -21,13 +21,10 @@ public class OrderConfirmation {
         this.driver = driver;
     }
 
-    public void waitUntilConfirmationHeaderAppear() {
+    public void clickOnButtonYes() {
         new WebDriverWait(driver, Duration.ofSeconds(EXPLICITY_TIMEOUT)).until(driver -> (driver.findElement(confirmationHeader).getText() != null
                 && !driver.findElement(confirmationHeader).getText().isEmpty()
         ));
-    }
-
-    public void clickOnButtonYes() {
         new WebDriverWait(driver, Duration.ofSeconds(EXPLICITY_TIMEOUT))
                 .until(ExpectedConditions.elementToBeClickable(buttonYes)).click();
     }
