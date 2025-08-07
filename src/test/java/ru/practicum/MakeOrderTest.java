@@ -4,7 +4,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import ru.practicum.pages.MainPage;
@@ -23,10 +22,6 @@ public class MakeOrderTest {
     @Rule
     public DriverFactory factory = new DriverFactory();
 
-    private WebDriver driver;
-    private MainPage mainPage;
-    private OrderFormUserInfo orderFormUserInfo;
-    private OrderFormScooterInfo orderFormScooterInfo;
     private final String name;
     private final String surname;
     private final String address;
@@ -38,9 +33,6 @@ public class MakeOrderTest {
     private final String comment;
     private final String expectedHeader = "Заказ оформлен";
     private final Enum button;
-    private By question;
-    private By answer;
-    private String expectedText;
 
     public MakeOrderTest(Enum button, String name, String surname, String address, int stationNumber, String phoneNumber, String date, String rentalPeriod, Enum colour, String comment) {
         this.name = name;
@@ -68,7 +60,7 @@ public class MakeOrderTest {
     @Test
     public void MakeSuccessfulOrderTest() {
         WebDriver driver = factory.getDriver();
-        var mainPage = new MainPage(driver, question, answer, expectedText);
+        var mainPage = new MainPage(driver);
         var orderFormUserInfo = new OrderFormUserInfo(driver);
         var orderFormScooterInfo = new OrderFormScooterInfo(driver);
         var orderConfirmation = new OrderConfirmation(driver);

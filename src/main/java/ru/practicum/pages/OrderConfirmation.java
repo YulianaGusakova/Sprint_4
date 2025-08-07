@@ -22,21 +22,22 @@ public class OrderConfirmation {
     }
 
     public void clickOnButtonYes() {
-        new WebDriverWait(driver, Duration.ofSeconds(EXPLICITY_TIMEOUT)).until(driver -> (driver.findElement(confirmationHeader).getText() != null
-                && !driver.findElement(confirmationHeader).getText().isEmpty()
-        ));
+        new WebDriverWait(driver, Duration.ofSeconds(EXPLICITY_TIMEOUT)).until(driver -> {
+            driver.findElement(confirmationHeader).getText();
+            return !driver.findElement(confirmationHeader).getText().isEmpty();
+        });
         new WebDriverWait(driver, Duration.ofSeconds(EXPLICITY_TIMEOUT))
                 .until(ExpectedConditions.elementToBeClickable(buttonYes)).click();
     }
 
-    public String getSuccessfulOrderHeader() {
-        new WebDriverWait(driver, Duration.ofSeconds(EXPLICITY_TIMEOUT)).until(driver -> (driver.findElement(successfulOrderHeader).getText() != null
-                && !driver.findElement(successfulOrderHeader).getText().isEmpty()
-        ));
+    public void getSuccessfulOrderHeader() {
+        new WebDriverWait(driver, Duration.ofSeconds(EXPLICITY_TIMEOUT)).until(driver -> {
+            driver.findElement(successfulOrderHeader).getText();
+            return !driver.findElement(successfulOrderHeader).getText().isEmpty();
+        });
         String actualText = driver.findElement(successfulOrderHeader).getText();
         Assert.assertTrue("Заголовок содержит ожидаемый текст", actualText.contains(expectedHeader));
 
-        return actualText;
     }
 }
 

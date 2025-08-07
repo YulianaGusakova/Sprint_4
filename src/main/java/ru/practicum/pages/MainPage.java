@@ -10,9 +10,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
 
+import static java.lang.String.format;
 import static org.junit.Assert.assertEquals;
 import static ru.practicum.util.Constants.EXPLICITY_TIMEOUT;
 import static ru.practicum.util.Constants.MakeOrderButton.DOWN_BUTTON;
@@ -24,120 +23,13 @@ public class MainPage {
     private final By searchField = By.cssSelector(".Input_Input__1iN_Z.Header_Input__xIoUq");
     private final By statusButton = By.cssSelector(".Header_Link__1TAG7");
     private final By panelFAQ = By.cssSelector(".Home_FAQ__3uVm4");
-    private final By questionLocator;
-    private final By answerLocator;
     private final By topMakeOrderButton = By.cssSelector(".Button_Button__ra12g");
     private final By downMakeOrderButton = By.cssSelector(".Button_Button__ra12g.Button_Middle__1CSJM");
-    private String expectedText;
+    private final String questionLocator = "accordion__heading-%s";
+    private final String answerLocator = "//div[contains(@id, 'accordion__panel-')][.='%s']";
 
-    private static final By QUESTION_PAYMENT = By.id("accordion__heading-0");
-    private static final By QUESTION_SCOOTER_QUANTITY = By.id("accordion__heading-1");
-    private static final By QUESTION_RENT_DURATION = By.id("accordion__heading-2");
-    private static final By QUESTION_TODAY_ORDER = By.id("accordion__heading-3");
-    private static final By QUESTION_DURATION_CHANGE = By.id("accordion__heading-4");
-    private static final By QUESTION_SCOOTER_CHARGER = By.id("accordion__heading-5");
-    private static final By QUESTION_ORDER_CANCEL = By.id("accordion__heading-6");
-    private static final By QUESTION_OUTSIDE_MKAD_ORDER = By.id("accordion__heading-7");
-
-    private static final By ANSWER_PAYMENT = By.id("accordion__panel-0");
-    private static final By ANSWER_SCOOTER_QUANTITY = By.id("accordion__panel-1");
-    private static final By ANSWER_RENT_DURATION = By.id("accordion__panel-2");
-    private static final By ANSWER_TODAY_ORDER = By.id("accordion__panel-3");
-    private static final By ANSWER_DURATION_CHANGE = By.id("accordion__panel-4");
-    private static final By ANSWER_SCOOTER_CHARGER = By.id("accordion__panel-5");
-    private static final By ANSWER_ORDER_CANCEL = By.id("accordion__panel-6");
-    private static final By ANSWER_OUTSIDE_MKAD_ORDER = By.id("accordion__panel-7");
-
-    private static final By ITEM_ANSWER_PAYMENT = By.xpath(".//*[@data-accordion-component='AccordionItemPanel' " +
-            "and @aria-labelledby='accordion__heading-0']");
-    private static final By ITEM_ANSWER_SCOOTER_QUANTITY = By.xpath(".//*[@data-accordion-component='AccordionItemPanel' " +
-            "and @aria-labelledby='accordion__heading-1']");
-    private static final By ITEM_ANSWER_RENT_DURATION = By.xpath(".//*[@data-accordion-component='AccordionItemPanel' " +
-            "and @aria-labelledby='accordion__heading-2']");
-    private static final By ITEM_ANSWER_TODAY_ORDER = By.xpath(".//*[@data-accordion-component='AccordionItemPanel' " +
-            "and @aria-labelledby='accordion__heading-3']");
-    private static final By ITEM_ANSWER_DURATION_CHANGE = By.xpath(".//*[@data-accordion-component='AccordionItemPanel' " +
-            "and @aria-labelledby='accordion__heading-4']");
-    private static final By ITEM_ANSWER_SCOOTER_CHARGER = By.xpath(".//*[@data-accordion-component='AccordionItemPanel' " +
-            "and @aria-labelledby='accordion__heading-5']");
-    private static final By ITEM_ANSWER_ORDER_CANCEL = By.xpath(".//*[@data-accordion-component='AccordionItemPanel' " +
-            "and @aria-labelledby='accordion__heading-6']");
-    private static final By ITEM_ANSWER_OUTSIDE_MKAD_ORDER = By.xpath(".//*[@data-accordion-component='AccordionItemPanel' " +
-            "and @aria-labelledby='accordion__heading-7']");
-
-    private static final String TEXT_ANSWER_PAYMENT = "Сутки — 400 рублей. Оплата курьеру — наличными или картой.";
-    private static final String TEXT_ANSWER_SCOOTER_QUANTITY = "Пока что у нас так: один заказ — один самокат. " +
-            "Если хотите покататься с друзьями, можете просто сделать несколько заказов — один за другим.";
-    private static final String TEXT_ANSWER_RENT_DURATION = "Допустим, вы оформляете заказ на 8 мая. Мы привозим самокат 8 мая в течение дня. " +
-            "Отсчёт времени аренды начинается с момента, когда вы оплатите заказ курьеру. " +
-            "Если мы привезли самокат 8 мая в 20:30, суточная аренда закончится 9 мая в 20:30.";
-    private static final String TEXT_ANSWER_TODAY_ORDER = "Только начиная с завтрашнего дня. Но скоро станем расторопнее.";
-    private static final String TEXT_ANSWER_DURATION_CHANGE = "Пока что нет! Но если что-то срочное — " +
-            "всегда можно позвонить в поддержку по красивому номеру 1010.";
-    private static final String TEXT_ANSWER_SCOOTER_CHARGER = "Самокат приезжает к вам с полной зарядкой. Этого хватает на восемь суток — " +
-            "даже если будете кататься без передышек и во сне. Зарядка не понадобится.";
-    private static final String TEXT_ANSWER_ORDER_CANCEL = "Да, пока самокат не привезли. Штрафа не будет, " +
-            "объяснительной записки тоже не попросим. Все же свои.";
-    private static final String TEXT_ANSWER_OUTSIDE_MKAD_ORDER = "Да, обязательно. Всем самокатов! И Москве, и Московской области.";
-
-
-    public MainPage(WebDriver driver, By questionLocator, By answerLocator, String expectedText) {
+    public MainPage(WebDriver driver) {
         this.driver = driver;
-        this.questionLocator = questionLocator;
-        this.answerLocator = answerLocator;
-        this.expectedText = expectedText;
-    }
-
-    public static List<Object[]> getFAQParameters() {
-        return Arrays.asList(
-                new Object[]{
-                        QUESTION_PAYMENT,
-                        ANSWER_PAYMENT,
-                        ITEM_ANSWER_PAYMENT,
-                        TEXT_ANSWER_PAYMENT
-                },
-                new Object[]{
-                        QUESTION_SCOOTER_QUANTITY,
-                        ANSWER_SCOOTER_QUANTITY,
-                        ITEM_ANSWER_SCOOTER_QUANTITY,
-                        TEXT_ANSWER_SCOOTER_QUANTITY
-                },
-                new Object[]{
-                        QUESTION_RENT_DURATION,
-                        ANSWER_RENT_DURATION,
-                        ITEM_ANSWER_RENT_DURATION,
-                        TEXT_ANSWER_RENT_DURATION
-                },
-                new Object[]{
-                        QUESTION_TODAY_ORDER,
-                        ANSWER_TODAY_ORDER,
-                        ITEM_ANSWER_TODAY_ORDER,
-                        TEXT_ANSWER_TODAY_ORDER
-                },
-                new Object[]{
-                        QUESTION_DURATION_CHANGE,
-                        ANSWER_DURATION_CHANGE,
-                        ITEM_ANSWER_DURATION_CHANGE,
-                        TEXT_ANSWER_DURATION_CHANGE
-                },
-                new Object[]{
-                        QUESTION_SCOOTER_CHARGER,
-                        ANSWER_SCOOTER_CHARGER,
-                        ITEM_ANSWER_SCOOTER_CHARGER,
-                        TEXT_ANSWER_SCOOTER_CHARGER
-                },
-                new Object[]{
-                        QUESTION_ORDER_CANCEL,
-                        ANSWER_ORDER_CANCEL,
-                        ITEM_ANSWER_ORDER_CANCEL,
-                        TEXT_ANSWER_ORDER_CANCEL
-                },
-                new Object[]{
-                        QUESTION_OUTSIDE_MKAD_ORDER,
-                        ANSWER_OUTSIDE_MKAD_ORDER,
-                        ITEM_ANSWER_OUTSIDE_MKAD_ORDER,
-                        TEXT_ANSWER_OUTSIDE_MKAD_ORDER
-                });
     }
 
     public void scrollToDownMakeOrderButton() {
@@ -182,15 +74,15 @@ public class MainPage {
         driver.findElement(statusButton).click();
     }
 
-    public void checkAnswerText() {
+    public void checkAnswerText(String expectedText) {
         new WebDriverWait(driver, Duration.ofSeconds(EXPLICITY_TIMEOUT))
-                .until(ExpectedConditions.visibilityOfElementLocated(answerLocator));
-        String result = driver.findElement(answerLocator).getText();
-        assertEquals(expectedText, result);
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(format(answerLocator, expectedText))));
+        String result = driver.findElement(By.xpath(format(answerLocator, expectedText))).getText();
+        assertEquals("Текст ответа содержит ошибку", expectedText, result);
     }
 
-    public void clickOnQuestionButton() {
-        driver.findElement(questionLocator).click();
+    public void clickOnQuestionButton(int index) {
+        driver.findElement(By.id(String.format(questionLocator, index))).click();
     }
 
     public void scrollPageDownToFAQ() {

@@ -17,8 +17,8 @@ public class OrderFormScooterInfo {
     private final By dateField = By.xpath(".//input[@placeholder='* Когда привезти самокат']");
     private final By rentalPeriod = By.xpath(".//span[@class='Dropdown-arrow']");
     private final By dropDownMenuDuration = By.cssSelector(".Dropdown-menu");
-    public final By colourBlackField = By.cssSelector(".Checkbox_Input__14A2w");
-    public final By colourGreyField = By.cssSelector(".Checkbox_Input__14A2w");
+    private final By colourBlackField = By.cssSelector(".Checkbox_Input__14A2w");
+    private final By colourGreyField = By.cssSelector(".Checkbox_Input__14A2w");
     private final By commentField = By.cssSelector(".Input_Input__1iN_Z.Input_Responsible__1jDKN");
     private final By orderButton = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
 
