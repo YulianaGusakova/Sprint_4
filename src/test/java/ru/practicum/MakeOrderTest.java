@@ -58,7 +58,7 @@ public class MakeOrderTest {
     }
 
     @Test
-    public void MakeSuccessfulOrderTest() {
+    public void makeSuccessfulOrderTest() {
         WebDriver driver = factory.getDriver();
         var mainPage = new MainPage(driver);
         var orderFormUserInfo = new OrderFormUserInfo(driver);

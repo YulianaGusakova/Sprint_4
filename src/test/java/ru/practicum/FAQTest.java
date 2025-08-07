@@ -37,7 +37,7 @@ public class FAQTest {
     }
 
     @Test
-    public void FAQCheckAnswerTest() throws InterruptedException {
+    public void fAQCheckAnswerTest() throws InterruptedException {
         WebDriver driver = factory.getDriver();
         var mainPage = new MainPage(driver);
         mainPage.scrollPageDownToFAQ();
